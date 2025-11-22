@@ -10,7 +10,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    filter_backends = []
+    filters = None
     status = 'active'
 
 class MessageViewSet(viewsets.ModelViewSet):
