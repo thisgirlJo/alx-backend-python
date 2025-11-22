@@ -12,19 +12,9 @@ class UserSerializer(serializers.ModelSerializer):
             'phone_number', 
             'role', 
             'created_at']
-class PasswordChangeSerializer(serializers.Serializer):
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True, min_length=8)
-    new_password_confirm = serializers.CharField(required=True, min_length=8)
-    
-    def validate(self, data):
-        if data['new_password'] != data['new_password_confirm']:
-            raise serializers.ValidationError("New passwords do not match")
-        return data
-    
 
 class MessageSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
+    sender = UserSerializer(read_only=True)
     class Meta:
         model = Message
         fields = [
@@ -32,12 +22,9 @@ class MessageSerializer(serializers.ModelSerializer):
             'sender', 
             'message_body', 
             'sent_at']
-        
-        def create(self, validated_data):
-            return Message.objects.create(**validated_data)
     
 class ConversationSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=True, read_only=True)
+    participants = UserSerializer(many=True, read_only=True)
     messages = MessageSerializer(many=True, read_only=True)
     class Meta:
         model = Conversation
@@ -45,5 +32,3 @@ class ConversationSerializer(serializers.ModelSerializer):
             'conversation_id',
             'participants', 
             'created_at']
-    def create(self, validated_data):
-        return Conversation.objects.create(**validated_data)
