@@ -1,6 +1,7 @@
 from django.urls import path, include
-from rest_framework.routers import routers
+from rest_framework_nested import routers
 from .views import UserViewSet, ConversationViewSet, MessageViewSet
+from .auth import CustomLoginView, RegisterView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
@@ -13,4 +14,7 @@ messages_router.register(r'comments', MessageViewSet, basename='message-comments
 convo_router = routers.NestedDefaultRouter(router, r'conversations', lookup='conversation')
 convo_router.register(r'messages', MessageViewSet, basename='conversation-messages')
 
-urlpatterns = [] + router.urls
+urlpatterns = [
+    path('register/', RegisterView.as_view(), name='register'),
+    path('auth/login/', CustomLoginView.as_view(), name='custom_login'),
+] + router.urls

@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'simplejwt',
+    'rest_framework_nested',
+    'rest_framework_simplejwt',
     'django_filters',
     'chats',
 ]
@@ -144,3 +145,4 @@ REST_FRAMEWORK = {
     ),
 }
 
+AUTH_USER_MODEL = 'chats.User'
